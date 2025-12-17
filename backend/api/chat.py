@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import Optional
 import uuid
 from rag.ingest import ingest_documents
 from rag.retrieve import retrieve_documents
@@ -10,7 +11,24 @@ from db.models import ChatSession, ChatMessage
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from config import settings
+from mangum import Mangum  # Vercel serverless adapter
 
+# --------------------------
+# Step 1: FastAPI App + CORS
+# --------------------------
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://ai-textbook-web.vercel.app"],  # Replace with actual frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# --------------------------
+# Step 2: Router
+# --------------------------
 router = APIRouter()
 
 class IngestRequest(BaseModel):
@@ -33,9 +51,6 @@ class SelectedTextChatRequest(BaseModel):
 
 @router.post("/ingest", response_model=IngestResponse)
 async def ingest(request: IngestRequest):
-    """
-    Ingest documents from the docs directory and store embeddings in Qdrant
-    """
     try:
         docs_path = request.docs_path or settings.DOCS_PATH
         result = await ingest_documents(docs_path, request.force_recreate)
@@ -49,21 +64,11 @@ async def ingest(request: IngestRequest):
 
 @router.post("/chat")
 async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db_session)):
-    """
-    Chat endpoint that uses RAG to answer questions based on ingested documents
-    Returns JSON compatible with ChatKit format
-    """
     try:
-        # Get or create session
         session_id = request.session_id or str(uuid.uuid4())
-
-        # 1. Retrieve relevant documents (top 5 chunks)
         retrieved_docs = await retrieve_documents(request.message, top_k=5)
-
-        # 2. Generate response using the RAG system
         response_text = await generate_response(request.message, retrieved_docs)
 
-        # 5. Store messages in database
         session = await db.execute(select(ChatSession).filter(ChatSession.session_id == session_id))
         session_obj = session.scalar_one_or_none()
         if not session_obj:
@@ -72,32 +77,20 @@ async def chat(request: ChatRequest, db: AsyncSession = Depends(get_db_session))
 
         user_message = ChatMessage(session_id=session_id, role="user", content=request.message)
         assistant_message = ChatMessage(session_id=session_id, role="assistant", content=response_text)
-
         db.add(user_message)
         db.add(assistant_message)
         await db.commit()
 
-        # 6. Return JSON compatible with ChatKit format
-        return {
-            "role": "assistant",
-            "content": response_text
-        }
+        return {"role": "assistant", "content": response_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during chat: {str(e)}")
 
 @router.post("/chat/selected-text")
 async def chat_selected_text(request: SelectedTextChatRequest, db: AsyncSession = Depends(get_db_session)):
-    """
-    Chat endpoint that answers questions based only on the selected/highlighted text
-    """
     try:
-        # Get or create session
         session_id = request.session_id or str(uuid.uuid4())
-
-        # Generate response using only the selected text
         response_text = await generate_response_from_selected_text(request.message, request.selected_text)
 
-        # Store messages in database
         session = await db.execute(select(ChatSession).filter(ChatSession.session_id == session_id))
         session_obj = session.scalar_one_or_none()
         if not session_obj:
@@ -110,14 +103,17 @@ async def chat_selected_text(request: SelectedTextChatRequest, db: AsyncSession 
             content=f"Question: {request.message}\nSelected text: {request.selected_text}"
         )
         assistant_message = ChatMessage(session_id=session_id, role="assistant", content=response_text)
-
         db.add(user_message)
         db.add(assistant_message)
         await db.commit()
 
-        return {
-            "role": "assistant",
-            "content": response_text
-        }
+        return {"role": "assistant", "content": response_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during selected text chat: {str(e)}")
+
+# --------------------------
+# Step 3: Include Router & Mangum
+# --------------------------
+app.include_router(router, prefix="/api/v1")
+
+handler = Mangum(app)  # Serverless adapter for Vercel
