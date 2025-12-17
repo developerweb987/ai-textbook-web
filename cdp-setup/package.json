@@ -1,0 +1,16 @@
+{
+  "name": "chrome-cdp-setup",
+  "version": "1.0.0",
+  "description": "Complete MCP/CDP setup for Chrome with remote debugging",
+  "main": "chrome_cdp_node.js",
+  "scripts": {
+    "start": "node chrome_cdp_node.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["chrome", "cdp", "devtools", "automation"],
+  "author": "MCP/CDP Setup",
+  "license": "MIT",
+  "dependencies": {
+    "chrome-remote-interface": "^0.33.0"
+  }
+}

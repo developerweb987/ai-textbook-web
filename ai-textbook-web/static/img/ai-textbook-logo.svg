@@ -1,136 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60">
   <defs>
-    <linearGradient id="robotGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#42a5f5;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e88e5;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f57c00;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ef6c00;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="bookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1a237e;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#0d47a1;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="pageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e3f2fd;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#42a5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e88e5;stop-opacity:1" />
+    </linearGradient>
   </defs>
 
-  <!-- Robot body -->
-  <g transform="translate(10, 12)">
-    <!-- Robot head -->
-    <rect x="0" y="0" width="36" height="36" rx="8" fill="url(#robotGradient)" />
+  <!-- Book with simple design -->
+  <g transform="translate(10, 5)">
+    <!-- Book cover -->
+    <path d="M5 10 L5 45 L35 45 L35 15 L25 5 L5 5 Z" fill="url(#bookGradient)" opacity="0.9"/>
 
-    <!-- Robot face/panel -->
-    <rect x="3" y="3" width="30" height="30" rx="4" fill="#ffffff" opacity="0.9" />
+    <!-- Book spine -->
+    <path d="M5 10 L25 10 L25 5 L5 5 Z" fill="url(#accentGradient)" opacity="0.8"/>
 
-    <!-- Robot eyes -->
-    <circle cx="11" cy="12" r="3" fill="url(#aiGradient)" />
-    <circle cx="25" cy="12" r="3" fill="url(#aiGradient)" />
+    <!-- Book pages -->
+    <path d="M35 15 L40 10 L40 45 L35 45 Z" fill="url(#pageGradient)" opacity="0.9"/>
 
-    <!-- Robot eyes inner -->
-    <circle cx="11" cy="12" r="1.5" fill="#ffffff" />
-    <circle cx="25" cy="12" r="1.5" fill="#ffffff" />
+    <!-- Book opening curve -->
+    <path d="M25 5 L35 15 L35 45 L25 45 Z" fill="#ffffff" opacity="0.7"/>
 
-    <!-- Robot mouth/speakers -->
-    <rect x="8" y="24" width="20" height="2" rx="1" fill="url(#aiGradient)" />
-
-    <!-- AI circuit pattern -->
-    <g transform="translate(10, 18)">
-      <!-- Neural network nodes -->
-      <circle cx="0" cy="0" r="1" fill="url(#aiGradient)" />
-      <circle cx="8" cy="0" r="1" fill="url(#aiGradient)" />
-      <circle cx="4" cy="4" r="1" fill="url(#aiGradient)" />
-      <circle cx="12" cy="4" r="1" fill="url(#aiGradient)" />
-
-      <!-- Neural connections -->
-      <line x1="0" y1="0" x2="4" y2="4" stroke="url(#aiGradient)" stroke-width="0.8" opacity="0.7" />
-      <line x1="8" y1="0" x2="4" y2="4" stroke="url(#aiGradient)" stroke-width="0.8" opacity="0.7" />
-      <line x1="8" y1="0" x2="12" y2="4" stroke="url(#aiGradient)" stroke-width="0.8" opacity="0.7" />
-      <line x1="0" y1="0" x2="8" y2="0" stroke="url(#aiGradient)" stroke-width="0.8" opacity="0.5" />
+    <!-- Simple book lines/pages -->
+    <g transform="translate(37, 15)">
+      <line x1="0" y1="0" x2="2" y2="0" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
+      <line x1="0" y1="4" x2="2" y2="4" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
+      <line x1="0" y1="8" x2="2" y2="8" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
+      <line x1="0" y1="12" x2="2" y2="12" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
+      <line x1="0" y1="16" x2="2" y2="16" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
+      <line x1="0" y1="20" x2="2" y2="20" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
     </g>
 
-    <!-- Robot body -->
-    <rect x="12" y="36" width="12" height="8" rx="2" fill="url(#robotGradient)" />
-
-    <!-- Robot chest panel -->
-    <rect x="15" y="38" width="6" height="4" rx="1" fill="url(#aiGradient)" opacity="0.8" />
-  </g>
-
-  <!-- Text -->
-  <g transform="translate(60, 0)">
-    <text x="0" y="28" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="url(#textGradient)">Physical AI</text>
-    <text x="0" y="44" font-family="Arial, sans-serif" font-size="10" fill="#2e7d32" font-weight="600" letter-spacing="1">TEXTBOOK</text>
-  </g>
-
-  <!-- Subtle robot grid pattern background -->
-  <g opacity="0.02" transform="translate(0, 0)">
-    <rect x="0" y="0" width="200" height="60" fill="url(#robotGradient)" />
-    <!-- Circuit board pattern -->
-    <g stroke="#ffffff" stroke-width="0.3">
-      <!-- Horizontal lines -->
-      <line x1="0" y1="5" x2="200" y2="5" />
-      <line x1="0" y1="10" x2="200" y2="10" />
-      <line x1="0" y1="15" x2="200" y2="15" />
-      <line x1="0" y1="20" x2="200" y2="20" />
-      <line x1="0" y1="25" x2="200" y2="25" />
-      <line x1="0" y1="30" x2="200" y2="30" />
-      <line x1="0" y1="35" x2="200" y2="35" />
-      <line x1="0" y1="40" x2="200" y2="40" />
-      <line x1="0" y1="45" x2="200" y2="45" />
-      <line x1="0" y1="50" x2="200" y2="50" />
-      <line x1="0" y1="55" x2="200" y2="55" />
-
-      <!-- Vertical lines -->
-      <line x1="5" y1="0" x2="5" y2="60" />
-      <line x1="10" y1="0" x2="10" y2="60" />
-      <line x1="15" y1="0" x2="15" y2="60" />
-      <line x1="20" y1="0" x2="20" y2="60" />
-      <line x1="25" y1="0" x2="25" y2="60" />
-      <line x1="30" y1="0" x2="30" y2="60" />
-      <line x1="35" y1="0" x2="35" y2="60" />
-      <line x1="40" y1="0" x2="40" y2="60" />
-      <line x1="45" y1="0" x2="45" y2="60" />
-      <line x1="50" y1="0" x2="50" y2="60" />
-      <line x1="55" y1="0" x2="55" y2="60" />
-      <line x1="60" y1="0" x2="60" y2="60" />
-      <line x1="65" y1="0" x2="65" y2="60" />
-      <line x1="70" y1="0" x2="70" y2="60" />
-      <line x1="75" y1="0" x2="75" y2="60" />
-      <line x1="80" y1="0" x2="80" y2="60" />
-      <line x1="85" y1="0" x2="85" y2="60" />
-      <line x1="90" y1="0" x2="90" y2="60" />
-      <line x1="95" y1="0" x2="95" y2="60" />
-      <line x1="100" y1="0" x2="100" y2="60" />
-      <line x1="105" y1="0" x2="105" y2="60" />
-      <line x1="110" y1="0" x2="110" y2="60" />
-      <line x1="115" y1="0" x2="115" y2="60" />
-      <line x1="120" y1="0" x2="120" y2="60" />
-      <line x1="125" y1="0" x2="125" y2="60" />
-      <line x1="130" y1="0" x2="130" y2="60" />
-      <line x1="135" y1="0" x2="135" y2="60" />
-      <line x1="140" y1="0" x2="140" y2="60" />
-      <line x1="145" y1="0" x2="145" y2="60" />
-      <line x1="150" y1="0" x2="150" y2="60" />
-      <line x1="155" y1="0" x2="155" y2="60" />
-      <line x1="160" y1="0" x2="160" y2="60" />
-      <line x1="165" y1="0" x2="165" y2="60" />
-      <line x1="170" y1="0" x2="170" y2="60" />
-      <line x1="175" y1="0" x2="175" y2="60" />
-      <line x1="180" y1="0" x2="180" y2="60" />
-      <line x1="185" y1="0" x2="185" y2="60" />
-      <line x1="190" y1="0" x2="190" y2="60" />
-      <line x1="195" y1="0" x2="195" y2="60" />
-
-      <!-- Diagonal connections for circuit feel -->
-      <line x1="10" y1="10" x2="15" y2="15" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="30" y1="20" x2="35" y2="25" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="50" y1="30" x2="55" y2="35" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="70" y1="10" x2="75" y2="15" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="90" y1="40" x2="95" y2="45" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="110" y1="20" x2="115" y2="25" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="130" y1="30" x2="135" y2="35" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="150" y1="10" x2="155" y2="15" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="170" y1="40" x2="175" y2="45" stroke="#ffffff" stroke-width="0.2" />
-      <line x1="190" y1="20" x2="195" y2="25" stroke="#ffffff" stroke-width="0.2" />
+    <!-- Simple AI/tech accent -->
+    <g transform="translate(15, 25)">
+      <circle cx="0" cy="0" r="2" fill="url(#accentGradient)" opacity="0.7"/>
+      <circle cx="0" cy="0" r="1" fill="#ffffff" opacity="0.9"/>
     </g>
   </g>
 </svg>

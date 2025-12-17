@@ -61,6 +61,14 @@
   --ifm-color-text: #f1f5f9;
   --ifm-background-color: #0f172a;
   --ifm-hover-overlay: rgba(100, 181, 246, 0.1);
+
+  /* Enhanced contrast variables for better readability */
+  --ifm-color-emphasis-100: #2d3748;
+  --ifm-color-emphasis-200: #4a5568;
+  --ifm-color-emphasis-300: #718096;
+  --ifm-color-emphasis-700: #e2e8f0;
+  --ifm-color-emphasis-800: #f7fafc;
+  --ifm-color-emphasis-900: #ffffff;
 }
 
 /* Custom styles for the entire site */
@@ -85,40 +93,40 @@ p {
   color: var(--ifm-color-content-secondary);
 }
 
-/* Section spacing improvements */
+/* Section spacing improvements - reduced for better UX */
 section {
-  margin: 4rem 0;
+  margin: 2.5rem 0; /* Reduced from 4rem to 2.5rem */
 }
 
 /* Consistent vertical spacing */
 .py-20 {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
 }
 
 .py-16 {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .mb-16 {
-  margin-bottom: 4rem;
-}
-
-.mb-12 {
   margin-bottom: 3rem;
 }
 
+.mb-12 {
+  margin-bottom: 2.5rem;
+}
+
 .mb-8 {
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 }
 
 .mb-6 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.3rem;
 }
 
 .mb-4 {
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 /* Enhanced navbar */
@@ -127,8 +135,8 @@ section {
   background-color: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 12px 0;
-  min-height: 64px; /* Ensure proper height for mobile touch targets */
+  padding: 8px 0; /* Reduced from 12px to 8px */
+  min-height: 56px; /* Reduced from 64px to 56px for better proportions */
 }
 
 /* Navbar styling */
@@ -236,6 +244,55 @@ button:hover {
   transition: all 0.2s ease;
 }
 
+/* Enhanced contrast for better accessibility */
+.text--primary {
+  color: var(--ifm-color-primary) !important;
+}
+
+.text--secondary {
+  color: var(--ifm-color-secondary) !important;
+}
+
+/* Better contrast for buttons */
+.button {
+  color: white !important;
+  border-color: transparent !important;
+}
+
+.button--outline {
+  color: var(--ifm-color-primary) !important;
+  border-color: var(--ifm-color-primary) !important;
+}
+
+.button--outline:hover {
+  color: white !important;
+  background-color: var(--ifm-color-primary) !important;
+}
+
+/* Enhanced contrast for form elements */
+.form-control {
+  border: 1px solid var(--ifm-color-emphasis-300) !important;
+}
+
+.form-control:focus {
+  border-color: var(--ifm-color-primary) !important;
+}
+
+/* Better contrast for alerts and notices */
+.alert {
+  border-left-width: 4px !important;
+}
+
+.alert--primary {
+  border-left-color: var(--ifm-color-primary) !important;
+  background-color: rgba(var(--ifm-color-primary-rgb), 0.1) !important;
+}
+
+.alert--secondary {
+  border-left-color: var(--ifm-color-secondary) !important;
+  background-color: rgba(var(--ifm-color-secondary-rgb), 0.1) !important;
+}
+
 /* Improved contrast for better accessibility */
 .text-slate-900 {
   color: #0f172a !important; /* Ensure high contrast for accessibility */
@@ -257,13 +314,14 @@ button:hover {
 /* Enhanced footer */
 .footer {
   background: linear-gradient(135deg, var(--ifm-footer-background-color) 0%, #0d47a1 100%) !important;
-  padding-top: 4rem;
-  padding-bottom: 3rem;
+  padding-top: 1rem; /* Reduced for more compact footer */
+  padding-bottom: 0.8rem; /* Reduced for more compact footer */
+  height: auto; /* Ensure footer adapts to content */
 }
 
 .footer__title {
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Reduced from 1.5rem to 1rem */
   color: var(--ifm-color-text);
   font-size: 1.25rem;
   position: relative;
@@ -284,8 +342,8 @@ button:hover {
   color: var(--ifm-color-content-secondary) !important;
   transition: all 0.3s ease;
   display: block;
-  margin-bottom: 0.75rem;
-  padding: 4px 0;
+  margin-bottom: 0.25rem; /* Reduced for more compact links */
+  padding: 1px 0; /* Reduced for more compact links */
   border-radius: 4px;
 }
 
@@ -304,9 +362,9 @@ button:hover {
 .footer__copyright {
   color: var(--ifm-color-content-secondary) !important;
   text-align: center;
-  padding-top: 2rem;
+  padding-top: 0.5rem; /* Reduced for more compact footer */
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: 2rem;
+  margin-top: 0.5rem; /* Reduced for more compact footer */
 }
 
 /* Dark mode footer styles */
@@ -537,7 +595,7 @@ h3 {
   overflow-x: auto;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  margin: 1.5rem 0;
+  margin: 1.2rem 0; /* Reduced from 1.5rem to 1.2rem */
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -669,8 +727,8 @@ a:hover::after {
   }
 
   .footer {
-    padding-top: 2.5rem;
-    padding-bottom: 2rem;
+    padding-top: 0.8rem; /* Keep compact in responsive view */
+    padding-bottom: 0.6rem; /* Keep compact in responsive view */
   }
 }
 
@@ -751,7 +809,7 @@ a:hover::after {
 .container {
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem; /* Reduced from 2rem to 1.5rem */
 }
 
 /* Only apply max-width on larger screens */
@@ -764,12 +822,12 @@ a:hover::after {
 /* Improved responsive container for smaller screens */
 @media (max-width: 576px) {
   .container {
-    padding: 0 1rem;
+    padding: 0 0.75rem; /* Reduced from 1rem to 0.75rem */
   }
 
   /* Ensure proper spacing on very small screens */
   .col {
-    padding: 0 0.5rem;
+    padding: 0 0.375rem; /* Reduced from 0.5rem to 0.375rem */
   }
 }
 
@@ -795,10 +853,12 @@ a:hover::after {
   }
 }
 
-/* Better vertical rhythm */
+/* Better vertical rhythm - reduced min-height to reduce gap above footer */
 main {
-  min-height: 60vh;
+  min-height: 50vh; /* Reduced from 60vh to 50vh */
   overflow-x: clip; /* Prevent horizontal overflow */
+  margin-top: 0;
+  padding-top: 0;
 }
 
 /* Enhanced visual hierarchy and spacing */
@@ -812,13 +872,13 @@ main {
 .section-divider {
   height: 1px;
   background: linear-gradient(to right, transparent, rgba(13, 71, 161, 0.2), transparent);
-  margin: 4rem auto;
+  margin: 2.5rem auto; /* Reduced from 4rem to 2.5rem */
   max-width: 80%;
 }
 
 /* Enhanced content cards */
 .card-content {
-  padding: 2rem;
+  padding: 1.5rem; /* Reduced from 2rem to 1.5rem */
   border-radius: var(--ifm-card-border-radius);
   background: var(--ifm-card-background-color);
   box-shadow: var(--ifm-card-shadow);
@@ -832,11 +892,11 @@ main {
 
 /* Better content spacing */
 .content-section {
-  padding: 5rem 0;
+  padding: 3rem 0; /* Reduced from 5rem to 3rem */
 }
 
 .content-section--narrow {
-  padding: 3rem 0;
+  padding: 2rem 0; /* Reduced from 3rem to 2rem */
 }
 
 /* Improved typography hierarchy */
@@ -926,16 +986,6 @@ main {
   transform: translateY(-1px);
 }
 
-/* Consistent section spacing */
-section {
-  margin: 4rem 0;
-}
-
-/* Remove any potential border/line between header and main content */
-main {
-  margin-top: 0;
-  padding-top: 0;
-}
 
 /* Remove any default border that might appear before features */
 .features {

@@ -174,6 +174,11 @@ const config: Config = {
       {property: 'og:url', content: 'https://developerweb987.github.io/physical-ai-textbook/'},
     ],
   } satisfies Preset.ThemeConfig,
+
+  // Add the Root component to wrap the entire application
+  clientModules: [
+    require.resolve('./src/components/Root.jsx'),
+  ],
 };
 
 export default config;

@@ -1,0 +1,67 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 7rem 0 3rem 0; /* Increased height from 6rem to 7rem top for more height */
+  width: 100%;
+  background-color: #000000; /* Black background in light mode */
+  color: #ffffff; /* White text in light mode */
+  margin-bottom: 0; /* Remove any extra bottom margin */
+}
+
+.features div {
+  color: #ffffff !important; /* Ensure text remains white in light mode */
+}
+
+.features h3 {
+  color: #ffffff !important; /* Ensure heading text remains white in light mode */
+}
+
+.features p {
+  color: #ffffff !important; /* Ensure paragraph text remains white in light mode */
+}
+
+.featureSvg {
+  height: 200px;
+  width: 200px;
+  color: #64b5f6; /* Light blue to contrast with black background in light mode */
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1); /* Light background for icons in light mode */
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+@media screen and (max-width: 996px) {
+  .features {
+    padding: 5rem 0 2rem 0; /* Increased mobile padding top for more height */
+  }
+
+  .featureSvg {
+    height: 150px;
+    width: 150px;
+  }
+}
+
+/* Dark mode support - now using white background with black text */
+html[data-theme='dark'] .features {
+  background-color: #ffffff; /* White background in dark mode */
+  color: #000000; /* Black text in dark mode */
+  padding: 7rem 0 6rem 0; /* Updated to match your specification */
+  margin-bottom: 0; /* Remove any extra bottom margin in dark mode */
+}
+
+html[data-theme='dark'] .features div {
+  color: #000000 !important; /* Maintain black text in dark mode */
+}
+
+html[data-theme='dark'] .features h3 {
+  color: #000000 !important; /* Maintain black heading text in dark mode */
+}
+
+html[data-theme='dark'] .features p {
+  color: #000000 !important; /* Maintain black paragraph text in dark mode */
+}
+
+html[data-theme='dark'] .featureSvg {
+  color: #1e3a8a; /* Dark blue to contrast with white background in dark mode */
+}
