@@ -20,3 +20,6 @@ httpx>=0.25.0
 cohere>=4.0.0
 sentence-transformers>=2.2.2
 aiosqlite>=0.17.0
+
+# Added for CORS support in Vercel
+fastapi-cors
