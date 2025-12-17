@@ -38,16 +38,6 @@ class ChatKitResponse(BaseModel):
     choices: List[dict]
     usage: dict
 
-@router.options("/chat")
-async def chat_options():
-    """Handle OPTIONS requests for chat endpoint"""
-    from fastapi.responses import Response
-    return Response(headers={
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "*",
-    })
-
 @router.post("/chat")
 async def chat(request: Request):
     """
@@ -58,6 +48,9 @@ async def chat(request: Request):
         json_data = await request.json()
         message = json_data.get("message")
         session_id = json_data.get("session_id")
+
+        if not message:
+            raise HTTPException(status_code=400, detail="Message is required")
 
         api_logger.info(f"Processing chat request for session: {session_id or 'new_session'}")
 
@@ -99,8 +92,12 @@ async def chat(request: Request):
 
         api_logger.info(f"Chat response generated successfully for session: {session_id}")
 
-        # Return JSON compatible with ChatKit format
-        return {"role": "assistant", "content": response}
+        # Return a consistent response format
+        return {
+            "role": "assistant",
+            "content": response,
+            "session_id": session_id
+        }
 
     except HTTPException:
         # Re-raise HTTP exceptions as-is
@@ -108,16 +105,6 @@ async def chat(request: Request):
     except Exception as e:
         api_logger.error(f"Error during chat: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error during chat: {str(e)}")
-
-@router.options("/chat/selected-text")
-async def chat_selected_text_options():
-    """Handle OPTIONS requests for selected text chat endpoint"""
-    from fastapi.responses import Response
-    return Response(headers={
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "*",
-    })
 
 @router.post("/chat/selected-text")
 async def chat_selected_text(request: Request):
@@ -130,6 +117,11 @@ async def chat_selected_text(request: Request):
         message = json_data.get("message")
         selected_text = json_data.get("selected_text")
         session_id = json_data.get("session_id")
+
+        if not message:
+            raise HTTPException(status_code=400, detail="Message is required")
+        if not selected_text:
+            raise HTTPException(status_code=400, detail="Selected text is required")
 
         api_logger.info(f"Processing selected text chat request for session: {session_id or 'new_session'}")
 
@@ -148,8 +140,12 @@ async def chat_selected_text(request: Request):
 
         api_logger.info(f"Selected text chat response generated successfully for session: {session_id}")
 
-        # Return JSON compatible with ChatKit format
-        return {"role": "assistant", "content": response}
+        # Return a consistent response format
+        return {
+            "role": "assistant",
+            "content": response,
+            "session_id": session_id
+        }
 
     except HTTPException:
         # Re-raise HTTP exceptions as-is
@@ -207,16 +203,6 @@ async def get_chat_session(session_id: str):
     except Exception as e:
         api_logger.error(f"Error getting chat session {session_id}: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error getting chat session: {str(e)}")
-
-@router.options("/chat/completions")
-async def chat_completions_options():
-    """Handle OPTIONS requests for chat completions endpoint"""
-    from fastapi.responses import Response
-    return Response(headers={
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "*",
-    })
 
 @router.post("/chat/completions", response_model=ChatKitResponse)
 async def chat_completions(request: Request):

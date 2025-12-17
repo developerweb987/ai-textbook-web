@@ -2,12 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import './BookChatbot.css';
 
 // Backend API configuration
-// Replace with your deployed backend URL
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://ai-textbook-web.vercel.app/api/v1";
+// Use environment variable if available, otherwise default to localhost
+// In Docusaurus, environment variables need to be prefixed with "REACT_APP_"
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL ||
+                   (typeof window !== 'undefined' ?
+                     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ?
+                       'http://127.0.0.1:8000' : // Default for local development
+                       `${window.location.protocol}//${window.location.hostname}:8000` // For other domains
+                     : 'http://127.0.0.1:8000'); // Fallback
 
 const BookChatbot = () => {
   console.log("Chatbot Component Mounted");
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // Set to false by default to prevent auto-open
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -107,15 +113,45 @@ const BookChatbot = () => {
       console.log("Fetching from:", endpoint);
       const response = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: JSON.stringify(requestBody),
       });
 
-      if (!response.ok) throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API request failed: ${response.status} ${response.statusText}. Details: ${errorText}`);
+      }
 
       const data = await response.json();
-      const responseText = data.content || data.answer || (data.choices?.[0]?.message?.content) || '';
 
+      // Handle different response formats from backend
+      let responseText;
+      if (data.content !== undefined) {
+        responseText = data.content;
+      } else if (data.answer !== undefined) {
+        responseText = data.answer;
+      } else if (data.choices && data.choices[0] && data.choices[0].message) {
+        // ChatKit format
+        responseText = data.choices[0].message.content;
+      } else if (data.role === 'assistant' && data.content) {
+        // Standard assistant response
+        responseText = data.content;
+      } else {
+        console.warn('Unexpected response format:', data);
+        // Fallback: try to find content in the response
+        if (typeof data === 'string') {
+          responseText = data;
+        } else if (data.message) {
+          responseText = data.message;
+        } else {
+          throw new Error('Invalid response format from backend: missing content, answer, or message field');
+        }
+      }
+
+      // Add AI response to chat
       const aiMessage = {
         id: Date.now() + 1,
         text: responseText || 'Sorry, no response received.',

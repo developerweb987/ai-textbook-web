@@ -209,11 +209,14 @@ LOG_LEVEL=INFO
 ```
 
 ### Frontend (Environment)
-For local development, you can create a `.env` file in the `ai-textbook-web/` directory:
+For local development and production, you can create a `.env` file in the `ai-textbook-web/` directory:
 
 ```env
 # Backend URL for development
 REACT_APP_BACKEND_URL=http://localhost:8000
+
+# For Vercel deployment, set this to your deployed backend URL
+# REACT_APP_BACKEND_URL=https://your-backend-project-name.vercel.app
 ```
 
 ## 🚀 Deployment
@@ -232,53 +235,24 @@ The textbook can be deployed to GitHub Pages. Update the `docusaurus.config.ts` 
 
 ### Vercel Deployment (Recommended)
 
-For full-stack deployment with both frontend and backend, follow these steps:
+For full-stack deployment with both frontend and backend, follow the detailed instructions in [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md).
 
-#### Frontend Deployment to Vercel
-1. Push your code to GitHub
-2. Connect your GitHub repository to Vercel
-3. Set build command to: `npm run build`
-4. Set output directory to: `build`
+#### Quick Deployment Steps:
 
-#### Backend Deployment to Vercel
-The FastAPI backend can be deployed as a serverless function on Vercel. Create a `vercel.json` file in the backend directory:
+1. **Deploy Backend**:
+   - Import the `/backend` directory as a separate Vercel project
+   - Use the provided `vercel.json` configuration
+   - Set required environment variables (API keys, database URL, CORS settings)
 
-```json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "main.py",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "main.py"
-    }
-  ]
-}
-```
+2. **Deploy Frontend**:
+   - Import the `/ai-textbook-web` directory as a separate Vercel project
+   - Use the provided `vercel.json` configuration
+   - Set `REACT_APP_BACKEND_URL` to your deployed backend URL
 
-#### Environment Variables on Vercel
-Set the following environment variables in your Vercel project settings:
-- `GEMINI_API_KEY`
-- `COHERE_API_KEY`
-- `QDRANT_URL` (if using hosted Qdrant)
-- `QDRANT_API_KEY` (if using hosted Qdrant)
-- `DATABASE_URL` (for production database)
+3. **Configure CORS**:
+   - Update `CORS_ORIGINS` in backend environment variables to include your frontend's Vercel URL
 
-#### CORS Configuration for Vercel
-Update your `CORS_ORIGINS` environment variable to include your Vercel deployment URL:
-```
-CORS_ORIGINS=http://localhost:3000,https://your-project-name.vercel.app,https://your-custom-domain.com
-```
-
-#### Frontend Configuration for Vercel
-If deploying the frontend to Vercel, set the backend URL in environment variables:
-- `REACT_APP_BACKEND_URL`: Set to your deployed backend URL
+For complete step-by-step instructions, see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md).
 
 ## 🤝 Contributing
 
