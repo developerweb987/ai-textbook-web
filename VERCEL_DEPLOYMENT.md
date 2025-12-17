@@ -99,3 +99,84 @@ CORS_ORIGINS=https://your-frontend-project-name.vercel.app,https://your-frontend
 ### Build Failures
 - Ensure all dependencies are properly listed in package.json and requirements.txt
 - Check that the build commands match your project setup
+
+## Complete Vercel Deployment Steps
+
+### 1. Deploy Backend to Vercel
+
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Click "Add New" → "Project"
+3. Import your GitHub repository (`ai-textbook-web`)
+4. In the "Root Directory" dropdown, select `/backend`
+5. Click "Next" and then "Deploy"
+6. After deployment, note the backend URL (e.g., `https://your-backend-project-name.vercel.app`)
+
+### 2. Configure Backend Environment Variables
+
+1. Go to your deployed backend project in Vercel dashboard
+2. Navigate to "Settings" → "Environment Variables"
+3. Add the following variables:
+   - `GEMINI_API_KEY`: Your Google Gemini API key
+   - `COHERE_API_KEY`: Your Cohere API key (if using)
+   - `QDRANT_URL`: Qdrant Cloud URL (if using hosted service)
+   - `QDRANT_API_KEY`: Qdrant API key (if using hosted service)
+   - `DATABASE_URL`: Database connection string (for production DB)
+   - `CORS_ORIGINS`: Comma-separated list of allowed origins (the default includes Vercel URLs)
+
+### 3. Deploy Frontend to Vercel
+
+1. Go back to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Click "Add New" → "Project"
+3. Import the same GitHub repository (`ai-textbook-web`)
+4. In the "Root Directory" dropdown, select `/ai-textbook-web`
+5. Add the following environment variable:
+   - `REACT_APP_BACKEND_URL`: Set to your deployed backend URL from step 1
+6. Click "Deploy"
+
+### 4. Configure Frontend Environment Variables
+
+1. Go to your deployed frontend project in Vercel dashboard
+2. Navigate to "Settings" → "Environment Variables"
+3. Add the following variable:
+   - `REACT_APP_BACKEND_URL`: Your deployed backend URL (e.g., `https://your-backend-project-name.vercel.app`)
+
+### 5. Verify the Deployment
+
+1. Access your frontend URL (e.g., `https://your-frontend-project-name.vercel.app`)
+2. Open the chatbot and test functionality
+3. Verify that:
+   - The chat window opens and closes properly
+   - Selected text functionality works
+   - Messages are sent and received without CORS errors
+   - The chat maintains session state
+   - API responses are properly formatted
+
+### 6. Optional: Custom Domain Setup
+
+1. In your Vercel dashboard, go to your frontend project
+2. Navigate to "Settings" → "Domains"
+3. Add your custom domain
+4. Follow Vercel's instructions to update your DNS settings
+5. Update your CORS settings in the backend to include your custom domain
+
+## Production Considerations
+
+### Database Configuration
+- For production, consider using PostgreSQL instead of SQLite
+- Set up a managed database service (e.g., Vercel Postgres, AWS RDS)
+- Update `DATABASE_URL` environment variable accordingly
+
+### Vector Database (Qdrant)
+- For production, use Qdrant Cloud or self-hosted Qdrant instance
+- Configure `QDRANT_URL` and `QDRANT_API_KEY` environment variables
+- Ensure your Qdrant instance is properly secured and scaled
+
+### AI API Keys Security
+- Never hardcode API keys in your source code
+- Always use environment variables for API keys
+- Consider using Vercel's secret management for sensitive keys
+
+### Performance Optimization
+- Monitor your serverless function cold starts
+- Consider using Vercel's edge functions for better performance
+- Optimize your AI model calls and caching strategies

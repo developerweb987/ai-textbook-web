@@ -22,9 +22,12 @@ const BookChatbot = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Check if we're running in the browser
+  const isBrowser = typeof window !== 'undefined';
+
   // Initialize session ID
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (isBrowser && window.localStorage) {
       try {
         const storedSessionId = localStorage.getItem('chat_session_id');
         if (storedSessionId) {
@@ -41,16 +44,19 @@ const BookChatbot = () => {
     } else {
       setSessionId(Date.now().toString());
     }
-  }, []);
+  }, [isBrowser]);
 
   // Detect highlighted text
   const getSelectedText = () => {
-    const selection = window.getSelection();
-    return selection.toString().trim();
+    if (isBrowser) {
+      const selection = window.getSelection();
+      return selection?.toString().trim() || '';
+    }
+    return '';
   };
 
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    if (!isBrowser) return;
 
     const handleSelection = () => {
       const selected = getSelectedText();
@@ -64,17 +70,19 @@ const BookChatbot = () => {
       document.removeEventListener('mouseup', handleSelection);
       document.removeEventListener('keyup', handleSelection);
     };
-  }, []);
+  }, [isBrowser]);
 
   // Scroll to bottom
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (isBrowser && messagesEndRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isBrowser]);
 
   // Toggle chat window
   const toggleChat = () => {
     setIsOpen(!isOpen);
-    if (!isOpen) {
+    if (!isOpen && isBrowser) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   };

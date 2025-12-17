@@ -14,12 +14,12 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  trailingSlash: true, // For better compatibility with both GitHub Pages and Vercel
+  trailingSlash: undefined, // Let Docusaurus handle trailing slashes appropriately
 
   // Set the production url of your site here
-  url: 'https://developerweb987.github.io',
+  url: 'https://ai-textbook-web.vercel.app',  // Updated for Vercel deployment
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub Pages deployment, use '/<projectName>/' format
+  // For Vercel deployment, keep as '/' unless using a subdirectory
   baseUrl: '/',
 
   // GitHub pages deployment config.
@@ -171,7 +171,7 @@ const config: Config = {
       {property: 'og:title', content: 'Physical AI & Humanoid Robotics Textbook'},
       {property: 'og:description', content: 'Master Physical AI, robotics, and humanoid systems with this comprehensive textbook'},
       {property: 'og:type', content: 'website'},
-      {property: 'og:url', content: 'https://developerweb987.github.io/physical-ai-textbook/'},
+      {property: 'og:url', content: 'https://ai-textbook-web.vercel.app/'},
     ],
   } satisfies Preset.ThemeConfig,
 
