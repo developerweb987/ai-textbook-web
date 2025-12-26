@@ -1,47 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a237e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0d47a1;stop-opacity:1" />
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4361ee"/>
+      <stop offset="100%" stop-color="#4cc9f0"/>
     </linearGradient>
-    <linearGradient id="pageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#e3f2fd;stop-opacity:1" />
+    <linearGradient id="brainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f72585"/>
+      <stop offset="100%" stop-color="#b5179e"/>
     </linearGradient>
-    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#42a5f5;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e88e5;stop-opacity:1" />
-    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="rgba(0,0,0,0.2)"/>
+    </filter>
   </defs>
 
-  <!-- Book with simple design -->
-  <g transform="translate(10, 5)">
-    <!-- Book cover -->
-    <path d="M5 10 L5 45 L35 45 L35 15 L25 5 L5 5 Z" fill="url(#bookGradient)" opacity="0.9"/>
-
-    <!-- Book spine -->
-    <path d="M5 10 L25 10 L25 5 L5 5 Z" fill="url(#accentGradient)" opacity="0.8"/>
+  <!-- Book base with shadow -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="40" width="120" height="120" rx="16" ry="16" fill="url(#logoGradient)" opacity="0.95"/>
 
     <!-- Book pages -->
-    <path d="M35 15 L40 10 L40 45 L35 45 Z" fill="url(#pageGradient)" opacity="0.9"/>
+    <rect x="50" y="50" width="100" height="100" rx="12" ry="12" fill="white" opacity="0.3"/>
 
-    <!-- Book opening curve -->
-    <path d="M25 5 L35 15 L35 45 L25 45 Z" fill="#ffffff" opacity="0.7"/>
+    <!-- Book spine -->
+    <rect x="40" y="40" width="15" height="120" rx="4" ry="4" fill="rgba(255,255,255,0.2)"/>
 
-    <!-- Simple book lines/pages -->
-    <g transform="translate(37, 15)">
-      <line x1="0" y1="0" x2="2" y2="0" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
-      <line x1="0" y1="4" x2="2" y2="4" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
-      <line x1="0" y1="8" x2="2" y2="8" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
-      <line x1="0" y1="12" x2="2" y2="12" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
-      <line x1="0" y1="16" x2="2" y2="16" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
-      <line x1="0" y1="20" x2="2" y2="20" stroke="url(#bookGradient)" stroke-width="0.8" opacity="0.6"/>
-    </g>
+    <!-- Book spine shine -->
+    <rect x="42" y="45" width="6" height="20" rx="2" ry="2" fill="white" opacity="0.3"/>
 
-    <!-- Simple AI/tech accent -->
-    <g transform="translate(15, 25)">
-      <circle cx="0" cy="0" r="2" fill="url(#accentGradient)" opacity="0.7"/>
-      <circle cx="0" cy="0" r="1" fill="#ffffff" opacity="0.9"/>
-    </g>
+    <!-- AI Brain symbol -->
+    <path d="M90 70 C100 60, 110 60, 120 70 C125 75, 125 85, 120 90 C115 95, 110 95, 105 90 C100 85, 95 85, 90 90 C85 95, 80 95, 75 90 C70 85, 70 75, 75 70 C80 65, 85 65, 90 70 Z" fill="url(#brainGradient)" opacity="0.95"/>
+
+    <!-- Neural network connections -->
+    <circle cx="90" cy="75" r="2" fill="#ffffff" opacity="0.8"/>
+    <circle cx="110" cy="75" r="2" fill="#ffffff" opacity="0.8"/>
+    <circle cx="100" cy="85" r="2" fill="#ffffff" opacity="0.8"/>
+    <circle cx="95" cy="95" r="2" fill="#ffffff" opacity="0.8"/>
+    <circle cx="105" cy="95" r="2" fill="#ffffff" opacity="0.8"/>
+
+    <!-- Connection lines -->
+    <line x1="90" y1="75" x2="100" y2="85" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+    <line x1="110" y1="75" x2="100" y2="85" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+    <line x1="95" y1="95" x2="100" y2="85" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+    <line x1="105" y1="95" x2="100" y2="85" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+
+    <!-- Shine effect -->
+    <path d="M45 45 L75 45 L75 65 L45 65 Z" fill="white" opacity="0.2" rx="3" ry="3"/>
   </g>
 </svg>

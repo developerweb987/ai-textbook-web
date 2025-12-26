@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import './BookChatbot.css';
 
-// Backend API configuration
-// Use environment variable if available, otherwise default to localhost
-// In Docusaurus, environment variables need to be prefixed with "REACT_APP_"
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL ||
-                   (typeof window !== 'undefined' ?
-                     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ?
-                       'http://127.0.0.1:8000' : // Default for local development
-                       `${window.location.protocol}//${window.location.hostname}:8000` // For other domains
-                     : 'http://127.0.0.1:8000'); // Fallback
-
 const BookChatbot = () => {
-  console.log("Chatbot Component Mounted");
+  const { siteConfig } = useDocusaurusContext();
+  const BACKEND_URL = (siteConfig && siteConfig.customFields ? siteConfig.customFields.backendUrl : null) ||
+                     (typeof window !== 'undefined' ?
+                       window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ?
+                         'http://127.0.0.1:8000' : // Default for local development
+                         `${window.location.protocol}//${window.location.hostname}:8000` // For other domains
+                       : 'http://127.0.0.1:8000'); // Fallback
   const [isOpen, setIsOpen] = useState(false); // Set to false by default to prevent auto-open
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -21,9 +18,61 @@ const BookChatbot = () => {
   const [sessionId, setSessionId] = useState(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const audioCtxRef = useRef(null);
 
   // Check if we're running in the browser
   const isBrowser = typeof window !== 'undefined';
+
+  // Initialize Audio Context safely
+  const initAudioContext = () => {
+    if (!isBrowser) return null;
+
+    try {
+      // Check if the Web Audio API is supported
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (typeof AudioContext !== 'undefined') {
+        // Create new audio context if one doesn't exist or if the current one is closed
+        if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+          audioCtxRef.current = new AudioContext();
+        }
+        return audioCtxRef.current;
+      }
+    } catch (error) {
+      console.warn('Web Audio API is not supported in this browser:', error);
+    }
+    return null;
+  };
+
+  // Function to speak text using Web Speech API
+  const speakText = (text) => {
+    if (!isBrowser) return;
+
+    // Check if the Web Speech API is supported
+    if (typeof window.speechSynthesis === 'undefined' || typeof window.SpeechSynthesisUtterance === 'undefined') {
+      console.warn('Web Speech API is not supported in this browser');
+      return;
+    }
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    // Create a new utterance
+    const utterance = new window.SpeechSynthesisUtterance(text);
+
+    // Set utterance properties
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1;
+
+    // Optional: Set voice (use default if none specified)
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      utterance.voice = voices[0]; // Use the first available voice
+    }
+
+    // Speak the text
+    window.speechSynthesis.speak(utterance);
+  };
 
   // Initialize session ID
   useEffect(() => {
@@ -112,13 +161,18 @@ const BookChatbot = () => {
       if (sessionId) requestBody.session_id = sessionId;
 
       if (currentSelectedText) {
-        endpoint = `${BACKEND_URL}/chat/selected-text`;
+        endpoint = `${BACKEND_URL}/api/v1/chat/selected-text`;
         requestBody.selected_text = currentSelectedText;
       } else {
-        endpoint = `${BACKEND_URL}/chat`;
+        endpoint = `${BACKEND_URL}/api/v1/chat`;
       }
 
       console.log("Fetching from:", endpoint);
+
+      // Add timeout handling for network requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -126,10 +180,14 @@ const BookChatbot = () => {
           'Accept': 'application/json',
         },
         body: JSON.stringify(requestBody),
+        signal: controller.signal
       });
 
+      clearTimeout(timeoutId);
+
+      // Check if the response is ok (status 200-299)
       if (!response.ok) {
-        const errorText = await response.text();
+        const errorText = await response.text().catch(() => 'Unable to read error response');
         throw new Error(`API request failed: ${response.status} ${response.statusText}. Details: ${errorText}`);
       }
 
@@ -168,11 +226,27 @@ const BookChatbot = () => {
       };
 
       setMessages(prev => [...prev, aiMessage]);
+
+      // Speak the AI response if browser supports it
+      if (responseText) {
+        speakText(responseText);
+      }
     } catch (error) {
       console.error('Error sending message:', error);
+
+      // Check if it's a network error
+      let errorMessageText = 'Sorry, there was an error processing your request. Please try again.';
+      if (error.name === 'AbortError') {
+        errorMessageText = 'Request timed out. The server may be taking too long to respond.';
+      } else if (error.message.includes('fetch')) {
+        errorMessageText = 'Unable to connect to the server. Please check your internet connection and try again.';
+      } else if (error.message.includes('API request failed')) {
+        errorMessageText = `Server error: ${error.message}`;
+      }
+
       const errorMessage = {
         id: Date.now() + 1,
-        text: 'Sorry, there was an error processing your request. Please try again.',
+        text: errorMessageText,
         sender: 'ai',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
@@ -216,7 +290,21 @@ const BookChatbot = () => {
               messages.map((message) => (
                 <div key={message.id} className={`book-chatbot-message ${message.sender === 'user' ? 'user-message' : 'ai-message'}`}>
                   <div className="book-chatbot-message-content">{message.text}</div>
-                  <div className="book-chatbot-message-timestamp">{message.timestamp}</div>
+                  <div className="book-chatbot-message-timestamp">
+                    {message.timestamp}
+                    {message.sender === 'ai' && (
+                      <button
+                        className="speak-button"
+                        onClick={() => speakText(message.text)}
+                        aria-label="Listen to message"
+                        title="Listen to message"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M3 9H7L12 4V20L7 15H3V9ZM16.5 12C16.5 10.23 15.48 8.71 14 7.97V16.02C15.48 15.29 16.5 13.77 16.5 12ZM14 3.23V5.29C16.89 6.15 19 8.83 19 12C19 15.17 16.89 17.85 14 18.71V20.77C18.01 19.86 21 16.28 21 12C21 7.72 18.01 4.14 14 3.23Z" fill="currentColor"/>
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))
             )}

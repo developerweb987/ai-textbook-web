@@ -5,56 +5,40 @@ import { BookOpen, Brain, Bot, Zap } from 'lucide-react';
 
 type FeatureItem = {
   title: string;
-  description: JSX.Element;
+  description: string;
   icon: React.ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
     title: 'AI-Powered Learning',
-    icon: <Brain className="featureSvg" size={48} />,
-    description: (
-      <>
-        Leverage advanced AI to help you understand complex concepts in Physical AI and Humanoid Robotics through interactive conversations.
-      </>
-    ),
+    description: 'Leverage advanced AI to help you understand complex concepts in Physical AI and Humanoid Robotics through interactive conversations.',
+    icon: <Brain className={styles.featureSvg} size={32} />,
   },
   {
     title: 'Interactive Textbook',
-    icon: <BookOpen className="featureSvg" size={48} />,
-    description: (
-      <>
-        Explore comprehensive content on Physical AI, robotics, and humanoid systems with an intelligent chatbot assistant.
-      </>
-    ),
+    description: 'Explore comprehensive content on Physical AI, robotics, and humanoid systems with an intelligent chatbot assistant.',
+    icon: <BookOpen className={styles.featureSvg} size={32} />,
   },
   {
     title: 'Smart Assistant',
-    icon: <Bot className="featureSvg" size={48} />,
-    description: (
-      <>
-        Get instant answers to your questions about the textbook content with our RAG-powered AI assistant.
-      </>
-    ),
+    description: 'Get instant answers to your questions about the textbook content with our RAG-powered AI assistant.',
+    icon: <Bot className={styles.featureSvg} size={32} />,
   },
   {
     title: 'Real-time Help',
-    icon: <Zap className="featureSvg" size={48} />,
-    description: (
-      <>
-        Highlight text and ask questions about specific content sections for contextual understanding.
-      </>
-    ),
+    description: 'Highlight text and ask questions about specific content sections for contextual understanding.',
+    icon: <Zap className={styles.featureSvg} size={32} />,
   },
 ];
 
 function Feature({title, icon, description}: FeatureItem) {
   return (
     <div className={clsx('col col--3')}>
-      <div className="text--center">
-        {icon}
-      </div>
-      <div className="text--center padding-horiz--md">
+      <div className={styles.contentCard}>
+        <div className={styles.contentIconContainer}>
+          {icon}
+        </div>
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
@@ -64,8 +48,14 @@ function Feature({title, icon, description}: FeatureItem) {
 
 export default function HomepageFeatures(): JSX.Element {
   return (
-    <section className={styles.features}>
+    <section className={styles.contentSection}>
       <div className="container">
+        <div className="row">
+          <div className="col col--12">
+            <h2 className={styles.sectionTitle}>Core Features</h2>
+            <p className={styles.sectionSubtitle}>Discover the powerful features that make learning Physical AI and Humanoid Robotics engaging and effective</p>
+          </div>
+        </div>
         <div className="row">
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />

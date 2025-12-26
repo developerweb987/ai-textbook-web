@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics Textbook',
   tagline: 'An AI-Native Textbook on Physical AI and Humanoid Robotics',
-  favicon: 'img/ai-favicon.svg',
+  favicon: 'img/logo_icon.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -75,7 +75,7 @@ const config: Config = {
       title: 'Physical AI Textbook',
       logo: {
         alt: 'Physical AI & Humanoid Robotics Textbook',
-        src: 'img/ai-textbook-logo.svg',
+        src: 'img/logo_icon.png',
       },
       items: [
         {
@@ -174,6 +174,11 @@ const config: Config = {
       {property: 'og:url', content: 'https://ai-textbook-web.vercel.app/'},
     ],
   } satisfies Preset.ThemeConfig,
+
+  // Add custom fields for application configuration
+  customFields: {
+    backendUrl: process.env.BACKEND_URL || 'http://127.0.0.1:8000',
+  },
 
   // Add the Root component to wrap the entire application
   clientModules: [

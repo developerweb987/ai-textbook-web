@@ -1,5 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Optional
 import uuid
@@ -11,24 +10,8 @@ from db.models import ChatSession, ChatMessage
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from config import settings
-from mangum import Mangum  # Vercel serverless adapter
 
-# --------------------------
-# Step 1: FastAPI App + CORS
-# --------------------------
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://ai-textbook-web.vercel.app"],  # Replace with actual frontend URL
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# --------------------------
-# Step 2: Router
-# --------------------------
+# Create router without app instance to avoid duplicate CORS configuration
 router = APIRouter()
 
 class IngestRequest(BaseModel):
@@ -111,9 +94,4 @@ async def chat_selected_text(request: SelectedTextChatRequest, db: AsyncSession 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during selected text chat: {str(e)}")
 
-# --------------------------
-# Step 3: Include Router & Mangum
-# --------------------------
-app.include_router(router, prefix="/api/v1")
-
-handler = Mangum(app)  # Serverless adapter for Vercel
+# Router is included in main app

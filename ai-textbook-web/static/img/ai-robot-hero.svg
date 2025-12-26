@@ -1,0 +1,57 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="robotBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4361ee"/>
+      <stop offset="100%" stop-color="#4cc9f0"/>
+    </linearGradient>
+    <linearGradient id="robotHead" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f72585"/>
+      <stop offset="100%" stop-color="#b5179e"/>
+    </linearGradient>
+    <linearGradient id="robotEye" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e3f2fd"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feComposite in="blur" in2="SourceGraphic" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Robot body -->
+  <g transform="translate(200, 200)">
+    <!-- Body -->
+    <rect x="-60" y="-40" width="120" height="120" rx="20" ry="20" fill="url(#robotBody)" opacity="0.95"/>
+
+    <!-- Head -->
+    <circle cx="0" cy="-80" r="40" fill="url(#robotHead)" opacity="0.95"/>
+
+    <!-- Eyes -->
+    <circle cx="-15" cy="-85" r="8" fill="url(#robotEye)" opacity="0.9"/>
+    <circle cx="15" cy="-85" r="8" fill="url(#robotEye)" opacity="0.9"/>
+    <circle cx="-15" cy="-85" r="4" fill="#ffffff"/>
+    <circle cx="15" cy="-85" r="4" fill="#ffffff"/>
+
+    <!-- Antenna -->
+    <line x1="0" y1="-120" x2="0" y2="-140" stroke="url(#robotHead)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="0" cy="-145" r="5" fill="url(#robotHead)"/>
+
+    <!-- Arms -->
+    <rect x="-90" y="-20" width="25" height="60" rx="12" ry="12" fill="url(#robotBody)" opacity="0.9"/>
+    <rect x="65" y="-20" width="25" height="60" rx="12" ry="12" fill="url(#robotBody)" opacity="0.9"/>
+
+    <!-- Legs -->
+    <rect x="-40" y="80" width="25" height="60" rx="12" ry="12" fill="url(#robotBody)" opacity="0.9"/>
+    <rect x="15" y="80" width="25" height="60" rx="12" ry="12" fill="url(#robotBody)" opacity="0.9"/>
+
+    <!-- Buttons on chest -->
+    <circle cx="-20" cy="0" r="4" fill="#ffffff" opacity="0.7"/>
+    <circle cx="0" cy="0" r="4" fill="#ffffff" opacity="0.7"/>
+    <circle cx="20" cy="0" r="4" fill="#ffffff" opacity="0.7"/>
+
+    <!-- Neural network pattern -->
+    <path d="M-40,-20 C-30,-30 -10,-30 0,-20 C10,-30 30,-30 40,-20" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3"/>
+    <path d="M-40,0 C-30,-10 -10,-10 0,0 C10,-10 30,-10 40,0" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3"/>
+    <path d="M-40,20 C-30,10 -10,10 0,20 C10,10 30,10 40,20" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.3"/>
+  </g>
+</svg>
